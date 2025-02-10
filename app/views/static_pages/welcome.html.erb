@@ -1,0 +1,10 @@
+<h1>Bienvenue <%= params[:first_name]&.capitalize || "cher visiteur" %> !</h1>
+<p> Ici c'est notre super site de potins, il est chouette, non ?</p>
+
+
+<h2>Les derniers potins :</h2>
+<ul>
+  <% @gossips.each do |gossip| %>
+    <li><strong><%= gossip.title %></strong> - par <%= gossip.user.first_name %></li>
+  <% end %>
+</ul>

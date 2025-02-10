@@ -8,3 +8,10 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+
+ body{
+  margin:20px auto;
+  line-height:1.4;
+  font-size:16px;
+  color:#413e3e;
+  padding:40px}
