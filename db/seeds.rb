@@ -9,6 +9,7 @@
 #   end
 
 require 'faker'
+require 'faussaire'
 
 
 Like.destroy_all
@@ -23,14 +24,16 @@ City.destroy_all
 
 # Création des villes
 10.times do
-  City.create!(name: Faker::Address.city, zip_code: Faker::Address.zip_code)
+  City.create!(name: Faussaire::Address.city, zip_code: Faussaire::Address.postal_code)
 end
 
 # Création des utilisateurs
 10.times do
+  first_name = rand(2).zero? ? Faussaire::Name.female_first_name : Faussaire::Name.male_first_name
+
   User.create!(
-    first_name: Faker::Name.first_name,
-    last_name: Faker::Name.last_name,
+    first_name: first_name,
+    last_name: Faussaire::Name.family_name,
     description: Faker::Lorem.sentence,
     email: Faker::Internet.email,
     age: rand(18..60),
@@ -41,15 +44,15 @@ end
 # Création des gossips
 20.times do
   Gossip.create!(
-    title: Faker::Lorem.sentence(word_count: 3),
-    content: Faker::Lorem.paragraph(sentence_count: 2),
+    title: Faussaire::Piraterie.rage,
+    content: Faussaire::Piraterie.potin,
     user: User.all.sample
   )
 end
 
 # Création des tags
 10.times do
-  Tag.create!(title: "##{Faker::Lorem.word}")
+  Tag.create!(title: "#{Faussaire::Piraterie.rage}")
 end
 
 # Association des tags aux gossips

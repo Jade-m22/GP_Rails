@@ -5,6 +5,7 @@ ruby "3.4.1"
 gem "faker"
 gem "table_print"
 gem "pg"
+gem 'faussaire'
 
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"

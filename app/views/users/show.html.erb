@@ -1,14 +1,24 @@
-<h1>Profil de <%= @user.first_name %> <%= @user.last_name %></h1>
-<p>Email : <%= @user.email %></p>
-<p>Ville : <%= @user.city.name if @user.city %></p>
+<%= stylesheet_link_tag "profil", media: "all" %>
 
-<h2>Ses potins :</h2>
-<ul>
-  <% @user.gossips.each do |gossip| %>
-    <li>
-      <strong><%= link_to gossip.title, gossip_path(gossip) %></strong>
-    </li>
-  <% end %>
-</ul>
+<div class="profil-container" style="border: 4px solid <%= @random_color %>; padding: 15px;">
+  <h1 class="profil-title">Profil de <%= @user.first_name %> <%= @user.last_name %></h1>
+  
+  <div class="profil-details">
+    <p><span class="label">Email:</span> <%= @user.email %></p>
+    <p><span class="label">Ville:</span> <%= @user.city.name if @user.city %></p>
+  </div>
 
-<%= link_to "Retour aux potins", root_path %>
+  <div class="profil-gossips">
+    <h2>Ses potins :</h2>
+    <ul>
+      <% @user.gossips.each do |gossip| %>
+        <% random_color = "rgb(#{rand(100..255)}, #{rand(100..255)}, #{rand(100..255)})" %>
+        <li style="background-color: <%= random_color %>;">
+          <strong><%= link_to gossip.title, gossip_path(gossip) %></strong>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+
+  <%= link_to "Retour aux potins", root_path, class: "profil-back-link" %>
+</div>
