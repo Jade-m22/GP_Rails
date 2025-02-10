@@ -1,0 +1,14 @@
+<h1>Profil de <%= @user.first_name %> <%= @user.last_name %></h1>
+<p>Email : <%= @user.email %></p>
+<p>Ville : <%= @user.city.name if @user.city %></p>
+
+<h2>Ses potins :</h2>
+<ul>
+  <% @user.gossips.each do |gossip| %>
+    <li>
+      <strong><%= link_to gossip.title, gossip_path(gossip) %></strong>
+    </li>
+  <% end %>
+</ul>
+
+<%= link_to "Retour aux potins", root_path %>

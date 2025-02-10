@@ -1,10 +1,23 @@
-<h1>Bienvenue <%= params[:first_name]&.capitalize || "cher visiteur" %> !</h1>
-<p> Ici c'est notre super site de potins, il est chouette, non ?</p>
+<h1 class="text-center my-4">
+  Bienvenue <%= params[:first_name]&.capitalize || "cher visiteur" %> !
+</h1>
+<p class="text-center">Ici c'est notre super site de potins, il est chouette, non ?</p>
 
-
-<h2>Les derniers potins :</h2>
-<ul>
-  <% @gossips.each do |gossip| %>
-    <li><strong><%= gossip.title %></strong> - par <%= gossip.user.first_name %></li>
-  <% end %>
-</ul>
+<div class="container mt-5">
+  <div class="row">
+    <% @gossips.each do |gossip| %>
+      <div class="col-md-4 mb-4">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title"><%= link_to gossip.title, gossip_path(gossip), class: "text-decoration-none text-dark" %></h5>
+            <p class="card-text">
+              <small class="text-muted">Par <%= link_to gossip.user.first_name, user_path(gossip.user), class: "text-primary" %></small>
+            </p>
+            <p class="card-text"><%= truncate(gossip.content, length: 100) %></p>
+            <a href="<%= gossip_path(gossip) %>" class="btn btn-outline-primary btn-sm">Lire plus</a>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

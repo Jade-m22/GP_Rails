@@ -9,9 +9,16 @@
  * Consider organizing styles into separate files for maintainability.
  */
 
- body{
+body{
   margin:20px auto;
   line-height:1.4;
   font-size:16px;
   color:#413e3e;
-  padding:40px}
+  padding:40px;
+  background-color:#f8f9fa;
+}
+  
+h1 {
+    color: #343a40;
+}
+  

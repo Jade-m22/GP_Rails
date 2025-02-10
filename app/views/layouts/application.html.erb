@@ -5,10 +5,13 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
+  <meta name="description" content="Bienvenue sur The Gossip Project, le site où vous découvrez les derniers potins et partagez vos histoires !">
+  <meta name="theme-color" content="#ffffff">
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 
   <%= yield :head %>
 
@@ -16,7 +19,6 @@
   <link rel="icon" href="/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/icon.png">
 
-  <%# Inclure le CSS de l'application %>
   <%= stylesheet_link_tag :application, "data-turbo-track": "reload" %>
   <%= javascript_importmap_tags %>
 </head>
@@ -34,7 +36,8 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav me-auto">
           <li class="nav-item">
-            <li><%= link_to "Accueil", welcome_path(first_name: params[:first_name]), class: "nav-link" %></li>
+            <%= link_to "Accueil", welcome_path(first_name: params[:first_name]), class: "nav-link" %>
+          </li>
           <li class="nav-item">
             <%= link_to "La Team", static_pages_team_path, class: "nav-link" %>
           </li>
@@ -44,18 +47,34 @@
         </ul>
 
         <form class="d-flex">
-          <input class="form-control me-2" type="search" placeholder="Recherche" aria-label="Recherche">
-          <button class="btn btn-outline-success" type="submit">Recherche</button>
+          <label for="search-input" class="visually-hidden">Rechercher</label>
+          <input id="search-input" class="form-control me-2" type="search" placeholder="Recherche" aria-label="Recherche">
+          <button class="btn btn-success d-flex align-items-center" type="submit">
+            <i class="bi bi-search me-1"></i> Recherche
+          </button>
         </form>
       </div>
     </div>
   </nav>
 
+  <% if flash.any? %>
+    <div class="container mt-3">
+      <% flash.each do |type, message| %>
+        <div class="alert <%= type == 'notice' ? 'alert-success' : 'alert-danger' %>">
+          <%= message %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
   <div class="container mt-4">
     <%= yield %>
   </div>
 
-  <%# Ajout du JS Bootstrap %>
+  <footer class="bg-light text-center py-3 mt-4">
+    <p>&copy; <%= Time.current.year %> The Gossip Project - Tous droits réservés</p>
+  </footer>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

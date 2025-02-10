@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  root to: "static_pages#home"
+  get "gossips/show"
+  root to: "static_pages#welcome"
   get "welcome(/:first_name)", to: "static_pages#welcome", as: "welcome"
 
 
@@ -7,4 +8,9 @@ Rails.application.routes.draw do
   get "/contact", to: "static_pages#contact", as: :static_pages_contact
 
   get "up" => "rails/health#show", as: :rails_health_check
+
+  resources :gossips, only: [ :show ]
+
+  resources :users, only: [ :show ]
+
 end
