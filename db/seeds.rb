@@ -18,7 +18,7 @@ GossipTag.destroy_all
 Gossip.destroy_all
 Tag.destroy_all
 User.destroy_all
-City.destroy_all 
+City.destroy_all
 
 
 # Création des villes
@@ -70,7 +70,7 @@ end
 20.times do
   Like.create!(
     user: User.all.sample,
-    likeable: [Gossip.all.sample, Comment.all.sample].sample
+    likeable: [ Gossip.all.sample, Comment.all.sample ].sample
   )
 end
 
