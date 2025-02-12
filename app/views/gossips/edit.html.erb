@@ -1,0 +1,24 @@
+<h1>Modifier le potin</h1>
+
+<%= form_with model: @gossip, local: true do |f| %>
+
+  <div>
+    <%= f.label :new_user_first_name, "Auteur du potin" %>
+    <%= f.text_field :new_user_first_name, value: @gossip.user&.first_name %>
+  </div>
+
+  <div>
+    <%= f.label :title, "Titre" %>
+    <%= f.text_field :title %>
+  </div>
+
+  <div>
+    <%= f.label :content, "Contenu" %>
+    <%= f.text_area :content %>
+  </div>
+
+  <div>
+    <%= f.submit "Modifier le potin" %>
+  </div>
+
+<% end %>

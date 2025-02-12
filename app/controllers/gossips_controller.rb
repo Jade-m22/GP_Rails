@@ -24,14 +24,40 @@ class GossipsController < ApplicationController
 
   def show
     @gossip = Gossip.find_by(id: params[:id])
-    if @gossip.nil?
-      redirect_to root_path, alert: "Gossip introuvable."
+    redirect_to root_path, alert: "Gossip introuvable." if @gossip.nil?
+  end
+
+  def edit
+    @gossip = Gossip.find_by(id: params[:id])
+  end 
+
+  def update
+    @gossip = Gossip.find(params[:id])
+    
+    user = User.find_by(first_name: params[:gossip][:new_user_first_name])
+    
+    if user
+      @gossip.user = user
+      if @gossip.update(gossip_params)
+        redirect_to @gossip, notice: "Le potin a été modifié avec succès !"
+      else
+        flash.now[:alert] = "Erreur : Le titre doit contenir entre 3 et 14 caractères."
+        render :edit, status: :unprocessable_entity
+      end
+    else
+      # Stocker les données du potin en attente dans la session
+      session[:pending_gossip] = { gossip_id: @gossip.id, title: params[:gossip][:title], content: params[:gossip][:content] }
+      session[:pending_gossip] = { gossip_id: @gossip.id }
+      Rails.logger.debug "Session après ajout : #{session[:pending_gossip]}"
+
+      
+      redirect_to new_user_path(gossip_id: @gossip.id), alert: "L'utilisateur n'existe pas. Veuillez le créer d'abord."
     end
   end
 
   private
 
   def gossip_params
-    params.require(:gossip).permit(:title, :content)
+    params.require(:gossip).permit(:title, :content, :user_id)
   end
 end

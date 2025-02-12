@@ -7,4 +7,5 @@
   <p><%= @gossip.content %></p>
   <p>Écrit par : <%= @gossip.user&.first_name.presence ? link_to(@gossip.user.first_name, user_path(@gossip.user)) : "Anonymous" %></p>
   <p>Créé le : <%= @gossip.created_at.strftime("%d/%m/%Y à %H:%M") %></p>
+  <p class="card-text"></p><a href="<%= edit_gossip_path %>" class="btn btn-light btn-sm">Modifier le gossip</a>
 </div>
