@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   get "gossips/show"
-  root to: "static_pages#welcome"
-  get "welcome(/:first_name)", to: "static_pages#welcome", as: "welcome"
+  root to: "welcome#show"
+  get "welcome(/:first_name)", to: "welcome#show", as: "welcome"
 
 
   get "/team", to: "static_pages#team", as: :static_pages_team
@@ -9,8 +9,11 @@ Rails.application.routes.draw do
 
   get "up" => "rails/health#show", as: :rails_health_check
 
-  resources :gossips, only: [ :show ]
-
-  resources :users, only: [ :show ]
+  resources :gossips, except: [:destroy, :edit, :update] do
+    resources :comments
+  end
+  
+  resources :users, only: [:show, :new, :create]
+  
 
 end

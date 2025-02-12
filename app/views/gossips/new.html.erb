@@ -1,0 +1,20 @@
+<h1>Créer un nouveau potin</h1>
+
+<%= form_with model: @gossip, local: true do |f| %>
+  <!-- 🔹 Champ caché pour garder l'utilisateur -->
+  <%= f.hidden_field :user_id, value: @user_id %>
+
+  <div>
+    <%= f.label :title, "Titre" %>
+    <%= f.text_field :title %>
+  </div>
+
+  <div>
+    <%= f.label :content, "Contenu" %>
+    <%= f.text_area :content %>
+  </div>
+
+  <div>
+    <%= f.submit "Créer le potin" %>
+  </div>
+<% end %>

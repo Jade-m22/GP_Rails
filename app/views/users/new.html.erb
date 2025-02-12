@@ -1,0 +1,37 @@
+<h1>Qui êtes-vous ?</h1>
+
+<%= form_with model: @user, url: users_path, method: :post do |f| %>
+  <div>
+    <%= f.label :first_name, "Prénom" %>
+    <%= f.text_field :first_name %>
+  </div>
+
+  <div>
+    <%= f.label :last_name, "Nom" %>
+    <%= f.text_field :last_name %>
+  </div>
+
+  <div>
+    <%= f.label :email, "Email" %>
+    <%= f.email_field :email %>
+  </div>
+
+  <div>
+    <%= f.label :age, "Âge" %>
+    <%= f.number_field :age %>
+  </div>
+
+  <div>
+    <%= f.label :description, "Description" %>
+    <%= f.text_area :description %>
+  </div>
+
+  <div>
+    <%= f.label :city_name, "Ville" %>
+    <%= f.text_field :city_name, placeholder: "Entrez votre ville" %>
+  </div>
+
+  <div>
+    <%= f.submit "Continuer" %>
+  </div>
+<% end %>

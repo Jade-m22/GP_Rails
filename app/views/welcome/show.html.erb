@@ -3,6 +3,8 @@
 </h1>
 <p class="text-center">Voici notre super site de potins pour rester à la page et connaître toutes les actus de THP !</p>
 
+<%= link_to "Créer un potin", new_user_path, class: "btn btn-primary" %>
+
 <div class="container mt-5">
   <div class="row">
     <% @gossips.each do |gossip| %>
@@ -12,7 +14,7 @@
           <div class="card-body text-black">
             <h5 class="card-title"><%= link_to gossip.title, gossip_path(gossip), class: "text-decoration-none text-black" %></h5>
             <p class="card-text">
-              <small class="text-dark">Par <%= link_to gossip.user.first_name, user_path(gossip.user), class: "text-black" %></small>
+            <small class="text-dark">Par <%= gossip.user&.first_name.presence || "Anonymous" %></small>
             </p>
             <p class="card-text"><%= truncate(gossip.content, length: 100) %></p>
             <a href="<%= gossip_path(gossip) %>" class="btn btn-light btn-sm">Lire plus</a>
