@@ -9,7 +9,8 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   resources :gossips do
-    resources :comments
+    resources :comments, only: [:create, :edit, :update, :destroy]
+    resources :likes, only: [:create, :destroy]
   end
   
   resources :users, only: [ :show, :new, :create ]
@@ -20,9 +21,5 @@ Rails.application.routes.draw do
   get '/login', to: 'sessions#new', as: :login
   post '/login', to: 'sessions#create'
   delete '/logout', to: 'sessions#destroy', as: :logout
-
-  resources :gossips do
-    resources :comments, only: [:create, :edit, :update, :destroy]
-  end  
 
 end

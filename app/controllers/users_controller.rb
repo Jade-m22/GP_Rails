@@ -24,25 +24,10 @@ class UsersController < ApplicationController
       flash[:success] = "Bienvenue #{@user.first_name} !"
       redirect_to root_path
     else
-      flash.now[:danger] = "Erreur dans l'inscription. Vérifie les informations."
+      flash.now[:danger] = "Erreur dans l'inscription. Vérifie tes informations."
       render :new
     end
   end
-  
-  
-  # def suggestions
-  #   query = params[:query]
-  #   field = params[:field]
-
-  #   allowed_fields = %w[first_name last_name email city]
-    
-  #   if allowed_fields.include?(field)
-  #     users = User.where("#{field} ILIKE ?", "%#{query}%").limit(5)
-  #     render json: users.pluck(field)
-  #   else
-  #     render json: []
-  #   end
-  # end
 
   private
 

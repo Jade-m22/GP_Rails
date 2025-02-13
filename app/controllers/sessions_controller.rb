@@ -7,7 +7,7 @@ class SessionsController < ApplicationController
     
     if user && user.authenticate(params[:password])
       session[:user_id] = user.id
-      redirect_to root_path, notice: "Connexion réussie !"
+      redirect_to root_path, notice: "Connexion réussie #{user&.first_name} !"
     else
       flash.now[:alert] = "Email ou mot de passe invalide."
       render :new, status: :unprocessable_entity
@@ -15,7 +15,8 @@ class SessionsController < ApplicationController
   end
 
   def destroy
+    user = User.find_by(id: session[:user_id])
     session[:user_id] = nil
-    redirect_to root_path, notice: "Déconnexion réussie !"
-  end
+    redirect_to root_path, notice: "Déconnexion réussie, à bientôt #{user&.first_name} !"
+  end  
 end

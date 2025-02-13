@@ -36,8 +36,8 @@ class GossipsController < ApplicationController
   def update
     @gossip = Gossip.find(params[:id])
   
-    if @gossip.update(gossip_params)
-      redirect_to @gossip, notice: "Le potin a été modifié avec succès !"
+    if @gossip.update(gossip_params.merge(user: @gossip.user))
+      redirect_to @gossip, notice: "Au top #{current_user&.first_name}, ton potin a été modifié avec succès !"
     else
       flash.now[:alert] = "Erreur : Le titre doit contenir entre 3 et 14 caractères."
       render :edit, status: :unprocessable_entity
@@ -47,7 +47,7 @@ class GossipsController < ApplicationController
   def destroy
     @gossip = Gossip.find(params[:id])
     @gossip.destroy
-    redirect_to root_path, notice: "Le potin a été supprimé avec succès."
+    redirect_to root_path, notice: "#{current_user&.first_name}, ton potin a bien été supprimé."
   end
 
   private
@@ -62,7 +62,7 @@ class GossipsController < ApplicationController
   def authorize_user
     @gossip = Gossip.find(params[:id])
     unless session[:user_id] == @gossip.user_id
-      redirect_to root_path, alert: "Vous n'avez pas l'autorisation de modifier ce potin."
+      redirect_to root_path, alert: "Vous ne pouvez pas modifier un potin si vous n'êtes pas l'auteur."
     end
   end
 

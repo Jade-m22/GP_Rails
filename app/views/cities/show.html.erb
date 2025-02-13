@@ -6,20 +6,33 @@
       <div class="col-12 mb-4">
         <div class="card shadow-sm" style="background-color: <%= random_color %>;">
           <div class="card-body">
-
             <h5 class="card-title">
               <%= link_to gossip.title, gossip_path(gossip), class: "text-decoration-none text-black hover-underline" %>
             </h5>
             <p class="card-text">
-
               <small class="text-dark">
                 Par <%= link_to gossip.user.first_name, user_path(gossip.user), class: "text-decoration-none text-black hover-underline" %>
               </small>
             </p>
             <p class="card-text">
-
               <%= link_to "Contenu", gossip_path(gossip), class: "text-decoration-none text-black hover-underline" %> : <%= gossip.content %>
             </p>
+
+            <!-- Bouton Like -->
+            <p><%= gossip.likes.count %> likes</p>
+  
+            <% if current_user %>
+              <% if gossip.likes.exists?(user: current_user) %>
+                <%= button_to "💔 Je n'aime plus", gossip_like_path(gossip, gossip.likes.find_by(user: current_user)), 
+                  method: :delete, class: "btn btn-sm btn-danger", data: { turbo: false } %>
+              <% else %>
+                <%= button_to "❤️ J'aime", gossip_likes_path(gossip), 
+                  method: :post, class: "btn btn-sm btn-primary", data: { turbo: false } %>
+              <% end %>
+            <% else %>
+              <p>Connecte-toi pour liker !</p>
+            <% end %>
+
           </div>
         </div>
       </div>
@@ -28,4 +41,3 @@
 </div>
 
 <%= link_to "Retour à l'accueil", root_path %>
-

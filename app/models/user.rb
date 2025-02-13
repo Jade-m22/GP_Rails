@@ -4,6 +4,7 @@ class User < ApplicationRecord
   has_and_belongs_to_many :received_messages, class_name: "PrivateMessage", join_table: "private_messages_users"
   belongs_to :city
   has_many :comments, dependent: :destroy
+  has_many :likes, dependent: :destroy
 
   has_secure_password
 

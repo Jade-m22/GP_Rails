@@ -5,44 +5,59 @@
     <%= @gossip.title %>
   </h1>
   <p><%= @gossip.content %></p>
-  <p>Écrit par : <%= @gossip.user&.first_name.presence ? link_to(@gossip.user.first_name, user_path(@gossip.user)) : "Anonymous" %></p>
+  <p>Écrit par : <%= link_to @gossip.user.first_name, user_path(@gossip.user) %></p>
   <p>Créé le : <%= @gossip.created_at.strftime("%d/%m/%Y à %H:%M") %></p>
   <p>À : <%= link_to @gossip.user.city.name, city_path(@gossip.user.city) %></p>
   
-  <% can_edit = session[ :user_id ] == @gossip.user_id %>
+  <% can_edit = session[:user_id] == @gossip.user_id %>
 
-<%= link_to "Modifier le gossip", edit_gossip_path(@gossip), class: "btn btn-light btn-sm #{'disabled' unless can_edit}" %>
+  <%= link_to "Modifier le gossip", edit_gossip_path(@gossip), class: "btn btn-light btn-sm #{'disabled' unless can_edit}", data: { turbo: false } %>
 
-<%= form_with url: gossip_path(@gossip), method: :delete, data: { confirm: "Êtes-vous sûr de vouloir supprimer ce potin ?" }, style: "display:inline;" do %>
-  <%= submit_tag "Supprimer le gossip", class: "btn btn-light btn-sm", disabled: !can_edit %>
-<% end %>
-
-
-<h3 class="mt-4">Commentaires</h3>
-<% if @gossip.comments.any? %>
-  <ul class="list-group">
-    <% @gossip.comments.each do |comment| %>
-      <li class="list-group-item">
-        <strong><%= comment.user.first_name %> :</strong> <%= comment.content %>
-        <% if current_user == comment.user || current_user == @gossip.user %>
-          <%= link_to "Supprimer", gossip_comment_path(@gossip, comment), method: :delete, data: { confirm: "Êtes-vous sûr ?" }, class: "btn btn-sm btn-danger ms-2" %>
-        <% end %>
-      </li>
-    <% end %>
-  </ul>
-<% else %>
-  <p>Aucun commentaire pour l’instant. Soyez le premier à commenter !</p>
-<% end %>
-
-
-<% if current_user %>
-  <h4 class="mt-4">Ajouter un commentaire</h4>
-  <%= form_with model: [@gossip, Comment.new], local: true do |form| %>
-    <div class="mb-3">
-      <%= form.text_area :content, class: "form-control", placeholder: "Écrivez votre commentaire ici..." %>
-    </div>
-    <%= form.submit "Commenter", class: "btn btn-primary" %>
+  <%= form_with url: gossip_path(@gossip), method: :delete, data: { turbo: false, confirm: "Êtes-vous sûr de vouloir supprimer ce potin ?" }, style: "display:inline;" do %>
+    <%= submit_tag "Supprimer le gossip", class: "btn btn-light btn-sm", disabled: !can_edit %>
   <% end %>
-<% else %>
-  <p class="text-muted mt-3">Vous devez être connecté pour laisser un commentaire.</p>
-<% end %>
+
+  <p><%= @gossip.likes.count %> likes</p>
+  
+  <% if current_user %>
+    <% if @gossip.likes.exists?(user: current_user) %>
+      <%= button_to "💔 Je n'aime plus", gossip_like_path(@gossip, @gossip.likes.find_by(user: current_user)), 
+        method: :delete, class: "btn btn-sm btn-danger", data: { turbo: false } %>
+    <% else %>
+      <%= button_to "❤️ J'aime", gossip_likes_path(@gossip), 
+        method: :post, class: "btn btn-sm btn-primary", data: { turbo: false } %>
+    <% end %>
+  <% else %>
+    <p>Connecte-toi pour liker !</p>
+  <% end %>
+
+  <h3 class="mt-4">Commentaires</h3>
+  <% if @gossip.comments.any? %>
+    <ul class="list-group">
+      <% @gossip.comments.each do |comment| %>
+        <li class="list-group-item">
+          <strong><%= comment.user.first_name %> :</strong> <%= comment.content %>
+          <% if current_user == comment.user || current_user == @gossip.user %>
+            <%= form_with url: gossip_comment_path(@gossip, comment), method: :delete, data: { turbo: false }, style: "display:inline;" do %>
+              <%= submit_tag "Supprimer", class: "btn btn-sm btn-danger ms-2" %>
+            <% end %>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>Aucun commentaire pour l’instant. Soyez le premier à commenter !</p>
+  <% end %>
+
+  <% if current_user %>
+    <h4 class="mt-4">Ajouter un commentaire</h4>
+    <%= form_with model: [@gossip, Comment.new], local: true, data: { turbo: false } do |form| %>
+      <div class="mb-3">
+        <%= form.text_area :content, class: "form-control", placeholder: "Écrivez votre commentaire ici..." %>
+      </div>
+      <%= form.submit "Commenter", class: "btn btn-primary" %>
+    <% end %>
+  <% else %>
+    <p class="text-muted mt-3">Vous devez être connecté pour laisser un commentaire.</p>
+  <% end %>
+</div>

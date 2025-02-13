@@ -78,11 +78,11 @@ end
 
 puts "💬 20 commentaires créés."
 
-# Création des likes (sur commentaires et gossips)
+#likes
 20.times do
   Like.create!(
     user: User.all.sample,
-    likeable: [Gossip.all.sample, Comment.all.sample].sample
+    gossip: Gossip.all.sample
   )
 end
 

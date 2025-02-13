@@ -12,17 +12,24 @@
     <% @gossips.each do |gossip| %>
       <% random_color = "rgb(#{rand(100..255)}, #{rand(100..255)}, #{rand(100..255)})" %>
       <div class="col-md-4 mb-4">
-        <div class="card shadow-sm" style="background-color: <%= random_color %>;">
-          <div class="card-body text-black">
+        <div class="card shadow-sm h-100" style="background-color: <%= random_color %>;">
+          <div class="card-body text-black d-flex flex-column">
             <h5 class="card-title"><%= link_to gossip.title, gossip_path(gossip), class: "text-decoration-none text-black" %></h5>
             <p class="card-text">
-            <small class="text-dark">Par <%= gossip.user&.first_name.presence || "Anonymous" %></small>
+              <small class="text-dark">Par <%= gossip.user&.first_name.presence %></small>
             </p>
-            <p class="card-text"><%= truncate(gossip.content, length: 100) %></p>
-            <a href="<%= gossip_path(gossip) %>" class="btn btn-light btn-sm">Lire plus</a>
+            <p class="card-text flex-grow-1"><%= truncate(gossip.content, length: 100) %></p>
+
+            <!-- Bouton "Lire plus" aligné en bas -->
+            <div class="d-flex justify-content-between align-items-center">
+              <a href="<%= gossip_path(gossip) %>" class="btn btn-light btn-sm">Lire plus</a>
+              <p class="mb-0"><%= gossip.likes.count %> ❤️</p>
+            </div>
+
           </div>
         </div>
       </div>
     <% end %>
   </div>
 </div>
+
