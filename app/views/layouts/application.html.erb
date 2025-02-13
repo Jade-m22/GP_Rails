@@ -56,7 +56,7 @@
               </li>
               <li class="nav-item">
                 <%= form_with url: logout_path, method: :delete, class: "d-inline" do %>
-                  <button type="submit" class="btn btn-link nav-link p-0">Déconnexion</button>
+                  <button type="submit" class="btn btn-danger">Déconnexion</button>
                 <% end %>
               </li>
             <% end %>
@@ -65,7 +65,7 @@
               <%= link_to "S'inscrire", new_user_path, class: "nav-link" %>
             </li>
             <li class="nav-item">
-              <%= link_to "Se connecter", login_path, class: "nav-link" %>
+              <%= link_to "Se connecter", login_path, class: "btn btn-outline-gradient mx-2" %>
             </li>
           <% end %>
         </ul>

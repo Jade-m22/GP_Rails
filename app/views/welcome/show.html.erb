@@ -5,12 +5,15 @@
 
 <p class="text-center">Voici notre super site de potins pour rester à la page et connaître toutes les actus de THP !</p>
 
-<%= link_to "Créer un potin", new_gossip_path, class: "btn btn-primary" %>
+<div class="text-center my-4">
+  <%= link_to "Créer un potin", new_gossip_path, class: "btn btn-gradient px-4 py-2 fw-bold" %>
+</div>
+
 
 <div class="container mt-5">
   <div class="row">
     <% @gossips.each do |gossip| %>
-      <% random_color = "rgb(#{rand(100..255)}, #{rand(100..255)}, #{rand(100..255)})" %>
+      <% random_color = "rgb(#{rand(200..255)}, #{rand(200..255)}, #{rand(200..255)})" %>
       <div class="col-md-4 mb-4">
         <div class="card shadow-sm h-100" style="background-color: <%= random_color %>;">
           <div class="card-body text-black d-flex flex-column">
