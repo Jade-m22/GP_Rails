@@ -1,9 +1,11 @@
 <h1 class="text-center my-4">
-  Bienvenue <%= params[:first_name]&.capitalize || "cher visiteur" %> !
+  <% user = User.find_by(id: session[:user_id]) %>
+  Bienvenue <%= user ? user.first_name.capitalize : "cher visiteur" %> !
 </h1>
+
 <p class="text-center">Voici notre super site de potins pour rester à la page et connaître toutes les actus de THP !</p>
 
-<%= link_to "Créer un potin", new_user_path, class: "btn btn-primary" %>
+<%= link_to "Créer un potin", new_gossip_path, class: "btn btn-primary" %>
 
 <div class="container mt-5">
   <div class="row">

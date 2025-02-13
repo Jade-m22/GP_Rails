@@ -1,0 +1,31 @@
+<h1>Les potins de <%= @city.name %> :</h1>
+<div class="container mt-5">
+  <div class="row">
+    <% @gossips.each do |gossip| %>
+      <% random_color = "rgb(#{rand(100..255)}, #{rand(100..255)}, #{rand(100..255)})" %>
+      <div class="col-12 mb-4">
+        <div class="card shadow-sm" style="background-color: <%= random_color %>;">
+          <div class="card-body">
+
+            <h5 class="card-title">
+              <%= link_to gossip.title, gossip_path(gossip), class: "text-decoration-none text-black hover-underline" %>
+            </h5>
+            <p class="card-text">
+
+              <small class="text-dark">
+                Par <%= link_to gossip.user.first_name, user_path(gossip.user), class: "text-decoration-none text-black hover-underline" %>
+              </small>
+            </p>
+            <p class="card-text">
+
+              <%= link_to "Contenu", gossip_path(gossip), class: "text-decoration-none text-black hover-underline" %> : <%= gossip.content %>
+            </p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<%= link_to "Retour à l'accueil", root_path %>
+

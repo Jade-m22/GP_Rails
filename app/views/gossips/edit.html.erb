@@ -2,9 +2,10 @@
 
 <%= form_with model: @gossip, local: true do |f| %>
 
+  <!-- Affichage du prénom de l'auteur, mais en lecture seule -->
   <div>
-    <%= f.label :new_user_first_name, "Auteur du potin" %>
-    <%= f.text_field :new_user_first_name, value: @gossip.user&.first_name %>
+    <%= f.label :author, "Auteur du potin" %>
+    <%= f.text_field :author, value: @gossip.user&.first_name, disabled: true %>
   </div>
 
   <div>
@@ -16,6 +17,9 @@
     <%= f.label :content, "Contenu" %>
     <%= f.text_area :content %>
   </div>
+
+  <!-- Champ caché pour user_id pour s'assurer que l'auteur ne change pas -->
+  <%= f.hidden_field :user_id, value: @gossip.user.id %>
 
   <div>
     <%= f.submit "Modifier le potin" %>

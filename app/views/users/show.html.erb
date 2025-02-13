@@ -2,11 +2,14 @@
 
 <div class="profil-container" style="border: 4px solid <%= @random_color %>; padding: 15px;">
   <h1 class="profil-title">
-  Profil de <%= @user&.first_name.presence || "Anonymous" %> <%= @user&.last_name.presence || "" %></h1>
+    Profil de <%= @user&.first_name.presence || "Anonymous" %> <%= @user&.last_name.presence || "" %>
+  </h1>
 
   <div class="profil-details">
     <p><span class="label">Email:</span> <%= @user.email %></p>
-    <p><span class="label">Ville:</span> <%= @user.city.name if @user.city %></p>
+    <p><span class="label">Ville: </span>
+      <%= link_to @user.city.name, city_path(@user.city) if @user.city %>
+    </p>
   </div>
 
   <div class="profil-gossips">
@@ -16,6 +19,9 @@
         <% random_color = "rgb(#{rand(100..255)}, #{rand(100..255)}, #{rand(100..255)})" %>
         <li style="background-color: <%= random_color %>;">
           <strong><%= link_to gossip.title, gossip_path(gossip) %></strong>
+          <p>
+            <%= link_to "Contenu", gossip_path(gossip), class: "text-decoration-none text-black hover-underline" %> : <%= gossip.content %>
+          </p>
         </li>
       <% end %>
     </ul>

@@ -1,0 +1,50 @@
+<%= form_with model: @user, url: users_path, method: :post do |f| %>
+  <div>
+    <%= f.label :first_name, "Prénom" %>
+    <%= f.text_field :first_name, id: "user_first_name", list: "first_name-suggestions", autocomplete: "off" %>
+    <datalist id="first_name-suggestions">
+      <% @first_names.each do |name| %>
+        <option value="<%= name %>">
+      <% end %>
+    </datalist>
+  </div>
+
+  <div>
+    <%= f.label :last_name, "Nom" %>
+    <%= f.text_field :last_name, id: "user_last_name", list: "last_name-suggestions", autocomplete: "off" %>
+    <datalist id="last_name-suggestions">
+      <% @last_names.each do |name| %>
+        <option value="<%= name %>">
+      <% end %>
+    </datalist>
+  </div>
+
+  <div>
+    <%= f.label :email, "Email" %>
+    <%= f.email_field :email, id: "user_email", list: "email-suggestions", autocomplete: "off" %>
+    <datalist id="email-suggestions">
+      <% @emails.each do |email| %>
+        <option value="<%= email %>">
+      <% end %>
+    </datalist>
+  </div>
+
+  <div>
+    <%= f.label :city_name, "Ville" %>
+    <%= f.text_field :city_name, id: "user_city", list: "city-suggestions", autocomplete: "off" %>
+    <datalist id="city-suggestions">
+      <% @cities.each do |city| %>
+        <option value="<%= city %>">
+      <% end %>
+    </datalist>
+  </div>
+
+  <div>
+    <%= f.label :description, "Description" %>
+    <%= f.text_area :description %>
+  </div>
+
+  <div>
+    <%= f.submit "Continuer" %>
+  </div>
+<% end %>

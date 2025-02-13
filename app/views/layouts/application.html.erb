@@ -2,11 +2,12 @@
 <html>
 <head>
   <title><%= content_for(:title) || "Gproject" %></title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="description" content="Bienvenue sur The Gossip Project, le site où vous découvrez les derniers potins et partagez vos histoires !">
   <meta name="theme-color" content="#ffffff">
+
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
 
@@ -46,33 +47,46 @@
           </li>
         </ul>
 
-        <form class="d-flex">
-          <label for="search-input" class="visually-hidden">Rechercher</label>
-          <input id="search-input" class="form-control me-2" type="search" placeholder="Recherche" aria-label="Recherche">
-          <button class="btn btn-success d-flex align-items-center" type="submit">
-            <i class="bi bi-search me-1"></i> Recherche
-          </button>
-        </form>
+        <ul class="navbar-nav">
+          <% if session[:user_id] %>
+            <% user = User.find_by(id: session[:user_id]) %>
+            <% if user %>
+              <li class="nav-item">
+                <%= link_to "Créer un potin", new_gossip_path, class: "nav-link" %>
+              </li>
+              <li class="nav-item">
+                <%= form_with url: logout_path, method: :delete, class: "d-inline" do %>
+                  <button type="submit" class="btn btn-link nav-link p-0">Déconnexion</button>
+                <% end %>
+              </li>
+            <% end %>
+          <% else %>
+            <li class="nav-item">
+              <%= link_to "S'inscrire", new_user_path, class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "Se connecter", login_path, class: "nav-link" %>
+            </li>
+          <% end %>
+        </ul>
       </div>
     </div>
   </nav>
 
   <% if flash.any? %>
-  <div class="container mt-3">
-    <% flash.each do |type, message| %>
-      <% bootstrap_class = case type.to_sym
+    <div class="container mt-3">
+      <% flash.each do |type, message| %>
+        <% bootstrap_class = case type.to_sym
           when :notice, :success then "alert-success"
           when :alert, :error then "alert-danger"
           else "alert-info"
-        end
-      %>
-      <div class="alert <%= bootstrap_class %>">
-        <%= message %>
-      </div>
-    <% end %>
-  </div>
+        end %>
+        <div class="alert <%= bootstrap_class %>">
+          <%= message %>
+        </div>
+      <% end %>
+    </div>
   <% end %>
-
 
   <div class="container mt-4">
     <%= yield %>

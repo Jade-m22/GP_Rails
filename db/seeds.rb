@@ -1,17 +1,7 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
-
 require 'faker'
 require 'faussaire'
 
-
+# Suppression des anciennes données
 Like.destroy_all
 Comment.destroy_all
 PrivateMessage.destroy_all
@@ -21,61 +11,82 @@ Tag.destroy_all
 User.destroy_all
 City.destroy_all
 
+puts "📌 Base de données vidée."
 
-# Création des villes
-10.times do
-  City.create!(name: Faussaire::Address.city, zip_code: Faussaire::Address.postal_code)
+#villes
+30.times do
+  City.create!(
+    name: Faussaire::Address.city,
+    zip_code: Faussaire::Address.postal_code
+  )
 end
 
-# Création des utilisateurs
-10.times do
+puts "🏙️ 30 villes créées."
+
+#utilisateurs
+20.times do
   first_name = rand(2).zero? ? Faussaire::Name.female_first_name : Faussaire::Name.male_first_name
 
   User.create!(
     first_name: first_name,
     last_name: Faussaire::Name.family_name,
     description: Faker::Lorem.sentence,
-    email: Faker::Internet.email,
+    email: Faker::Internet.unique.email,
     age: rand(18..60),
-    city_id: City.all.sample.id
+    city: City.all.sample,
+    password: "password"
   )
 end
 
-# Création des gossips
-20.times do
+puts "🧑‍🤝‍🧑 20 utilisateurs créés."
+
+#gossips
+25.times do
   Gossip.create!(
-    title: Faussaire::Piraterie.rage,
+    title: Faker::Lorem.characters(number: (3..14)),
     content: Faussaire::Piraterie.potin,
     user: User.all.sample
   )
 end
 
-# Création des tags
+puts "📝 25 gossips créés."
+
+#tags
 10.times do
-  Tag.create!(title: "#{Faussaire::Piraterie.rage}")
+  Tag.create!(
+    title: Faussaire::Piraterie.rage
+  )
 end
+
+puts "🏷️ 10 tags créés."
 
 # Association des tags aux gossips
 Gossip.all.each do |gossip|
   gossip.tags << Tag.all.sample(rand(1..3))
 end
 
-# Création des commentaires
+puts "🔗 Les gossips ont été tagués."
+
+#commentaires
 20.times do
   Comment.create!(
-    content: Faker::Lorem.sentence,
+    content: Faker::Lorem.sentence(word_count: 8),
     user: User.all.sample,
     gossip: Gossip.all.sample
   )
 end
 
+puts "💬 20 commentaires créés."
+
 # Création des likes (sur commentaires et gossips)
 20.times do
   Like.create!(
     user: User.all.sample,
-    likeable: [ Gossip.all.sample, Comment.all.sample ].sample
+    likeable: [Gossip.all.sample, Comment.all.sample].sample
   )
 end
+
+puts "❤️ 20 likes créés."
 
 # Création des messages privés
 5.times do
@@ -83,10 +94,13 @@ end
   recipients = User.all.sample(rand(1..3))
 
   pm = PrivateMessage.create!(
-    content: Faker::Lorem.sentence,
+    content: Faker::Lorem.sentence(word_count: 10),
     sender: sender
   )
 
   pm.recipients << recipients
 end
+
+puts "📩 5 messages privés créés."
+
 puts "Tout fonctionne !!!"

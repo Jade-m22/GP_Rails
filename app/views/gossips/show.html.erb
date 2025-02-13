@@ -7,5 +7,42 @@
   <p><%= @gossip.content %></p>
   <p>Écrit par : <%= @gossip.user&.first_name.presence ? link_to(@gossip.user.first_name, user_path(@gossip.user)) : "Anonymous" %></p>
   <p>Créé le : <%= @gossip.created_at.strftime("%d/%m/%Y à %H:%M") %></p>
-  <p class="card-text"></p><a href="<%= edit_gossip_path %>" class="btn btn-light btn-sm">Modifier le gossip</a>
-</div>
+  <p>À : <%= link_to @gossip.user.city.name, city_path(@gossip.user.city) %></p>
+  
+  <% can_edit = session[ :user_id ] == @gossip.user_id %>
+
+<%= link_to "Modifier le gossip", edit_gossip_path(@gossip), class: "btn btn-light btn-sm #{'disabled' unless can_edit}" %>
+
+<%= form_with url: gossip_path(@gossip), method: :delete, data: { confirm: "Êtes-vous sûr de vouloir supprimer ce potin ?" }, style: "display:inline;" do %>
+  <%= submit_tag "Supprimer le gossip", class: "btn btn-light btn-sm", disabled: !can_edit %>
+<% end %>
+
+
+<h3 class="mt-4">Commentaires</h3>
+<% if @gossip.comments.any? %>
+  <ul class="list-group">
+    <% @gossip.comments.each do |comment| %>
+      <li class="list-group-item">
+        <strong><%= comment.user.first_name %> :</strong> <%= comment.content %>
+        <% if current_user == comment.user || current_user == @gossip.user %>
+          <%= link_to "Supprimer", gossip_comment_path(@gossip, comment), method: :delete, data: { confirm: "Êtes-vous sûr ?" }, class: "btn btn-sm btn-danger ms-2" %>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>Aucun commentaire pour l’instant. Soyez le premier à commenter !</p>
+<% end %>
+
+
+<% if current_user %>
+  <h4 class="mt-4">Ajouter un commentaire</h4>
+  <%= form_with model: [@gossip, Comment.new], local: true do |form| %>
+    <div class="mb-3">
+      <%= form.text_area :content, class: "form-control", placeholder: "Écrivez votre commentaire ici..." %>
+    </div>
+    <%= form.submit "Commenter", class: "btn btn-primary" %>
+  <% end %>
+<% else %>
+  <p class="text-muted mt-3">Vous devez être connecté pour laisser un commentaire.</p>
+<% end %>

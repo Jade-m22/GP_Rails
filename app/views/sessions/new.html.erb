@@ -1,0 +1,19 @@
+<h2>Connexion</h2>
+
+<%= form_with url: login_path, method: :post do |form| %>
+  <div>
+    <%= form.label :email %>
+    <%= form.email_field :email, required: true %>
+  </div>
+
+  <div>
+    <%= form.label :password %>
+    <%= form.password_field :password, required: true %>
+  </div>
+
+  <div>
+    <%= form.submit "Se connecter" %>
+  </div>
+<% end %>
+
+<p class="mt-3 small">Je n'ai pas de compte, <%= link_to "je m’inscris", new_user_path %>.</p>

@@ -8,11 +8,21 @@ Rails.application.routes.draw do
 
   get "up" => "rails/health#show", as: :rails_health_check
 
-  resources :gossips, except: [ :destroy ] do
+  resources :gossips do
     resources :comments
   end
   
-  resources :users, only: [:show, :new, :create]
+  resources :users, only: [ :show, :new, :create ]
+  get '/users/suggestions', to: 'users#suggestions'
   
+  resources :cities, only: [ :show ]
+
+  get '/login', to: 'sessions#new', as: :login
+  post '/login', to: 'sessions#create'
+  delete '/logout', to: 'sessions#destroy', as: :logout
+
+  resources :gossips do
+    resources :comments, only: [:create, :edit, :update, :destroy]
+  end  
 
 end
