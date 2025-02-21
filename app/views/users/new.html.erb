@@ -12,6 +12,7 @@
 <% end %>
 
 <%= form_with model: @user, url: users_path, local: true, data: { turbo: false } do |form| %>
+  <%= form.hidden_field :authenticity_token, value: form_authenticity_token %>
 
   <div class="form-group">
     <%= form.label :first_name, "Prénom" %>
@@ -58,6 +59,11 @@
   </div>
 
   <%= form.submit "S'inscrire", class: "btn btn-primary mt-3" %>
+
+  <div class="form-group">
+    <%= form.label :remember_me, "Se souvenir de moi" %>
+    <%= form.check_box :remember_me %>
+  </div>
 <% end %>
 
 <%= link_to "Retour à l'accueil", root_path, class: "btn btn-secondary mt-3", data: { turbo: false } %>

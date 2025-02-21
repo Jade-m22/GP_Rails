@@ -21,6 +21,7 @@ class UsersController < ApplicationController
   
     if @user.save
       session[:user_id] = @user.id
+      remember(@user) if params[:user][:remember_me] == "1"
       flash[:success] = "Bienvenue #{@user.first_name} !"
       redirect_to root_path
     else

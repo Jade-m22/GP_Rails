@@ -16,7 +16,7 @@
     <h2>Ses potins :</h2>
     <ul>
       <% @user.gossips.each do |gossip| %>
-        <% random_color = "rgb(#{rand(100..255)}, #{rand(100..255)}, #{rand(100..255)})" %>
+        <% random_color = "rgb(#{rand(200..255)}, #{rand(200..255)}, #{rand(200..255)})" %>
         <li style="background-color: <%= random_color %>;">
           <strong><%= link_to gossip.title, gossip_path(gossip) %></strong>
           <p>
